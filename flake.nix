@@ -9,8 +9,8 @@
     {
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
-            nodejs
-            
+          nodejs
+          pnpm
         ];
       };
     }
