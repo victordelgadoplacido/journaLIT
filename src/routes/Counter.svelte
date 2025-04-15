@@ -1,5 +1,10 @@
 <script lang="ts">
+	interface Props {
+		myprop?: number
+	}
 	import { Spring } from 'svelte/motion';
+
+	const { myprop }: Props = $props()
 
 	const count = new Spring(0);
 	const offset = $derived(modulo(count.current, 1));

@@ -1,11 +1,11 @@
-import sqlite, { Database } from 'sqlite'
-import { open } from 'sqlite'
+import { Database } from 'sqlite'
 
-interface Tweet {
+export interface Tweet {
     id: number
     title: string
     content: string
     likes: number
+    created: Date
 }
 
 export async function getTweets(db :Database, tweetId: number): Promise<Tweet[]>{
