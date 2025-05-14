@@ -31,11 +31,13 @@ export async function getChatsFromUser(db :Database, userId: number): Promise<Ch
     return row;
 }
 
-export async function LikeTweet(db :Database, tweetId: number){  
-    const row = await db.run('Update tweets Set likes = likes + 1 Where tweet_id = ?', [tweetId]);
+export async function LikeTweet(db :Database, tweet_id: number){  
+    const row = await db.run('Update tweets Set likes = likes + 1 Where tweet_id = ?', [tweet_id]);
 }
 
-
+export async function UnLikeTweet(db :Database, tweet_id: number){  
+    const row = await db.run('Update tweets Set likes = likes - 1 Where tweet_id = ?', [tweet_id]);
+}
 
 // export async function getTweetIdFromUse(db :Database, userId: number): Promise<Chat[]>{   
 //     const row = await db.all('SELECT * FROM user_chat WHERE user_id = ?', [userId]);
