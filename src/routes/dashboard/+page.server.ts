@@ -11,9 +11,8 @@ export const load: PageServerLoad = async () => {
 
 	for (var chat of chats) {
 		currentChatTweets = await getTweetsFromChat(lit_db, chat.chat_id);
-		// console.log(currentChatTweets[0].content)
 		tweets.push(...currentChatTweets);
-		currentChatTweets = []
+		currentChatTweets = [];
 	}
 	tweets.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 	return{

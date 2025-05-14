@@ -10,16 +10,16 @@
 	console.log("no prob");
 </script>
 
-<div class="max-w-2xl mx-auto py-8">
+<div class="py-8">
 	{#each data.tweets as tweet}
 	  <TweetCard
+		tweet_id={tweet.tweet_id} 
 		title={tweet.title}
 		description={tweet.description}
 		likes={tweet.likes}
 		created={tweet.created}
 		author={tweet.author}   
 		image={tweet.image}
-		tweet_id={tweet.tweet_id} 
 	  />
 	{/each}
   </div>
