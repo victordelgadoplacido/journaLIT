@@ -12,7 +12,10 @@
   </script>
   
 <div class="tweet-card border p-4 rounded-xl shadow mb-4 bg-white">
-	<h2 class="text-xl font-bold mb-1">{title}</h2>
+	<h2 class="text-xl font-bold mb-1">
+        <!-- Make the title clickable -->
+        <a href={`/tweet/${tweet_id}`} class="text-blue-500 hover:underline">{title}</a>
+    </h2>
 	{#if author}
 		<p class="text-sm text-gray-500 mb-2">by {author}</p>
 	{/if}

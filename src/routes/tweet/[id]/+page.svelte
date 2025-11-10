@@ -2,6 +2,8 @@
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
     import type { PageProps } from './$types';
+    import LikeButton from '$lib/components/LikeButton.svelte';
+
 
     let tweet_id: number | null;
     let tweet: { title: string; description: string; author: string; image: string; created: Date; likes: number; content: string } | null = null;
@@ -10,7 +12,7 @@
    
 </script>
 
-<div class="tweet-card border p-4 rounded-xl shadow mb-4 bg-white">
+<div class="tweet-card w-full max-w-5xl mx-auto border p-5 rounded-xl shadow bg-white">
     <!-- Tweet Title -->
     <h1 class="text-2xl font-bold mb-2">{data.title}</h1>
   
@@ -29,12 +31,12 @@
     {/if}
   
     <!-- Tweet Likes -->
-    <p class="text-gray-600">Likes: {data.likes}</p>
+	<LikeButton tweet_id={data.tweet_id} likes={data.likes}/>
   </div>
   
   <style>
     .tweet-card {
-      max-width: 600px;
+      max-width: 1000px;
       margin: 0 auto;
     }
   </style>

@@ -5,9 +5,9 @@
 
 <script lang="ts">
 	import type { PageProps } from "./$types";
+	import { Button } from "$lib/components/ui/button/index.js";
 	import TweetCard from '$lib/components/TweetCard.svelte';
 	let {data}: PageProps = $props();
-	console.log("no prob");
 </script>
 
 <div class="py-8">
@@ -22,4 +22,8 @@
 		image={tweet.image}
 	  />
 	{/each}
-  </div>
+	<div class="mt-4 flex justify-end">
+		<Button href="/tweet/0" class="bg-blue-500 text-white hover:bg-blue-600">New Tweet</Button>
+	</div>
+</div>
+

@@ -9,6 +9,7 @@ export interface Tweet {
     image: string
     author: string
     chat_id: number
+    content: string
 }
 
 export interface Chat {
@@ -37,6 +38,11 @@ export async function LikeTweet(db :Database, tweet_id: number){
 
 export async function UnLikeTweet(db :Database, tweet_id: number){  
     const row = await db.run('Update tweets Set likes = likes - 1 Where tweet_id = ?', [tweet_id]);
+}
+
+export async function getTweet(db :Database, tweet_id: number): Promise<Tweet>{   
+    const tweet = await db.get('SELECT * FROM tweets WHERE tweet_id = ?', [tweet_id]);
+    return tweet;
 }
 
 // export async function getTweetIdFromUse(db :Database, userId: number): Promise<Chat[]>{   
