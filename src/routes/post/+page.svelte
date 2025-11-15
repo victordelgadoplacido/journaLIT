@@ -25,7 +25,7 @@
 	}
 
 	const openRouter = new OpenRouter({
-		apiKey:  //	Replace with environmet variable
+		apiKey: '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' //	Replace with environmet variable
 	});
 
 	async function genPost() {
@@ -85,10 +85,30 @@
 					}
 				]
 			}
+
 			//get the new title and description from the completion
 		);
+		const rawText = completion.choices?.[0]?.message?.content || '';
 
-		console.log(completion);
+		// Try to find and parse JSON safely
+		let parsed;
+		try {
+			// Extract JSON portion even if wrapped in markdown
+			const jsonMatch = typeof rawText === 'string' ? rawText.match(/\{[\s\S]*\}/) : null;
+			if (!jsonMatch) throw new Error('No JSON found in response.');
+			parsed = JSON.parse(jsonMatch[0]);
+		} catch (err) {
+			console.error('Failed to parse model output:', err);
+			console.log('Raw output was:', rawText);
+			return null;
+		}
+		const title = parsed.title || 'Untitled';
+		const description = parsed.description || '';
+
+		console.log('Generated Post:');
+		console.log('Title:', title);
+		console.log('Description:', description);
+		return { title, description };
 	}
 
 	// Function to toggle selection with proper reactivity
@@ -141,7 +161,7 @@
 	}
 
 	// Main function to collect all form data
-	function getPost() {
+	async function getPost() {
 		const postData = {
 			title: getTitle(),
 			description: getDescription(),
@@ -166,14 +186,18 @@
 			return null;
 		}
 
+		const generatedPost = await genPost();
+		if (generatedPost) {
+			postData.title = generatedPost.title;
+			postData.description = generatedPost.description;
+		}
 		console.log('Post Data:', postData);
 		return postData;
 	}
 
 	// Function to handle the form submission
-	function handleGeneratePost() {
-		const generated_post = genPost();
-		const post = getPost();
+	async function handleGeneratePost() {
+		const post = await getPost();
 
 		if (post) {
 			alert(
