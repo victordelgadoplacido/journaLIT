@@ -14,6 +14,7 @@ export interface Tweet {
 
 export interface Chat {
 	chat_id: number;
+	name: string;
 }
 
 //Function that extracts array of tweets of a sepcific chat
@@ -28,10 +29,31 @@ export async function getTweetsFromChat(db: Database, chatId: number): Promise<T
 
 //Function that extracts array of chats of a sepcific user
 export async function getChatsFromUser(db: Database, userId: number): Promise<Chat[]> {
-	console.log(db);
+	console.log('Getting chats for user:', userId);
 
-	const stmt = db.prepare('SELECT * FROM user_chat WHERE user_id = ?');
-	return stmt.all(userId);
+	// Step 1: Get all chat_ids for this user
+	const stmt = db.prepare('SELECT chat_id FROM user_chat WHERE user_id = ?');
+	const userChats = stmt.all(userId) as { chat_id: number }[];
+
+	console.log('Found chat_ids:', userChats);
+
+	// If no chats found, return empty array
+	if (userChats.length === 0) {
+		return [];
+	}
+
+	// Step 2: Get the chat_ids as an array
+	const chatIds = userChats.map((uc) => uc.chat_id);
+
+	// Step 3: Fetch all chat objects using the chat_ids
+	// Create placeholders for IN clause: (?, ?, ?)
+	const placeholders = chatIds.map(() => '?').join(',');
+	const chatStmt = db.prepare(`SELECT * FROM chats WHERE chat_id IN (${placeholders})`);
+	const chats = chatStmt.all(...chatIds) as Chat[];
+
+	console.log('Retrieved chats:', chats);
+
+	return chats;
 }
 
 export function LikeTweet(db: Database.Database, tweetId: number): void {
